@@ -1,3 +1,6 @@
+# Parcial-IO
+Repositorio dedicado al desarrollo completo del ultimo parcial de septimo semestre en Ingenieria en sistemas.
+
 # MateRico · maqueta funcional
 
 Maqueta navegable de **MateRico**, la plataforma web tipo juego de tablero para que estudiantes de 10.° y 11.° refuercen matemáticas. Esta entrega sirve para **mostrar avances y validar la dirección visual y el flujo del juego**; no es todavía el MVP con backend.
