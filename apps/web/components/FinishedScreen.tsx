@@ -9,6 +9,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { BadgeArt } from "@/components/art/BadgeArt";
+import { Mascot } from "@/components/art/Mascot";
+import { BARRIOS } from "@/lib/game-data";
 
 export function FinishedScreen({
   coins,
@@ -44,10 +47,12 @@ export function FinishedScreen({
       </header>
 
       <main className="relative z-10 mx-auto max-w-2xl px-4 py-12 text-center sm:px-6">
-        <span className="mx-auto grid h-20 w-20 place-items-center rounded-[28px] bg-coin/20 text-[#6b4e00]">
-          <Trophy className="h-11 w-11" aria-hidden="true" />
-        </span>
-        <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight">
+        <Mascot
+          expression="trophy"
+          label="Rico celebra que completaste la ciudad"
+          className="mx-auto h-32 w-32"
+        />
+        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight">
           ¡Completaste la ciudad!
         </h1>
         <p className="mx-auto mt-3 max-w-lg text-ink/70">
@@ -55,6 +60,22 @@ export function FinishedScreen({
           construiste tu capital. Esta es la celebración que verá el estudiante
           al terminar la campaña.
         </p>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          {BARRIOS.map((barrio) => (
+            <span
+              key={barrio.id}
+              className="flex items-center gap-1.5 rounded-full border border-line bg-white/70 py-1 pl-1 pr-3 text-[11px] font-bold"
+            >
+              <BadgeArt
+                iconKey={barrio.iconKey}
+                color={barrio.color}
+                className="h-7 w-7"
+              />
+              {barrio.shortName}
+            </span>
+          ))}
+        </div>
 
         <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[

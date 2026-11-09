@@ -18,9 +18,19 @@ const atkinson = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  ),
   title: "MateRico · Maqueta de avance",
   description:
     "Maqueta funcional de MateRico: una ciudad que se construye con matemáticas. Datos ficticios para demostración.",
+  openGraph: {
+    title: "MateRico · Una ciudad que se construye con matemáticas",
+    description:
+      "Recorre seis barrios, resuelve retos y conquista puntos de control. Maqueta funcional de MateRico.",
+    locale: "es_CO",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

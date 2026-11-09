@@ -1,0 +1,29 @@
+# Control de versiones y metadatos
+.git
+.gitignore
+.gitattributes
+
+# Dependencias y artefactos locales
+**/node_modules
+**/.pnpm-store
+**/.next
+**/out
+**/dist
+**/build
+**/coverage
+**/*.log
+
+# Entornos y secretos
+.env
+.env.*
+!.env.example
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Documentación y material que no entra al build
+docs
+README.md

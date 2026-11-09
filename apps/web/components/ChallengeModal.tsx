@@ -3,6 +3,7 @@
 import { Send, Timer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { MathText } from "@/components/MathText";
+import { Mascot } from "@/components/art/Mascot";
 import type { Barrio } from "@/lib/game-data";
 import { SKILL_LABEL } from "@/lib/game-data";
 import type { AnswerContext, CheckpointState } from "@/lib/game-state";
@@ -170,15 +171,23 @@ export function ChallengeModal({
 
         <form onSubmit={handleSubmit} className="px-4 py-5 sm:px-6">
           <div className="rounded-2xl border border-line bg-white/70 p-4">
-            <p
-              id="challenge-stem"
-              className="text-[1.05rem] font-semibold leading-relaxed text-ink sm:text-lg"
-            >
-              <MathText text={question.stem} />
-            </p>
-            {question.hint && (
-              <p className="mt-2 text-sm text-muted">{question.hint}</p>
-            )}
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <p
+                  id="challenge-stem"
+                  className="text-[1.05rem] font-semibold leading-relaxed text-ink sm:text-lg"
+                >
+                  <MathText text={question.stem} />
+                </p>
+                {question.hint && (
+                  <p className="mt-2 text-sm text-muted">{question.hint}</p>
+                )}
+              </div>
+              <Mascot
+                expression="thinking"
+                className="hidden h-16 w-16 flex-none sm:block"
+              />
+            </div>
           </div>
 
           <div className="mt-5">

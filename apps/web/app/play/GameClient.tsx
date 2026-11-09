@@ -5,7 +5,6 @@ import {
   Building2,
   Coins,
   Dices,
-  Flag,
   Flame,
   GraduationCap,
   HelpCircle,
@@ -16,8 +15,7 @@ import {
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BankModal } from "@/components/BankModal";
-import { BarrioIcon } from "@/components/BarrioIcon";
-import { Board } from "@/components/Board";
+import { BarrioBoard } from "@/components/BarrioBoard";
 import { ChallengeModal } from "@/components/ChallengeModal";
 import { CityMap } from "@/components/CityMap";
 import { EventModal } from "@/components/EventModal";
@@ -25,6 +23,7 @@ import { FinishedScreen } from "@/components/FinishedScreen";
 import { Logo } from "@/components/Logo";
 import { PlayerCard } from "@/components/PlayerCard";
 import { CheckpointEndModal, ResultModal } from "@/components/ResultModal";
+import { DiceFace } from "@/components/art/DiceFace";
 import {
   BARRIOS,
   EVENTS,
@@ -516,154 +515,97 @@ export function GameClient() {
         </div>
       </header>
 
-      <main className="mx-auto grid max-w-7xl gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[310px_minmax(0,1fr)] lg:py-6">
-        <aside className="hidden space-y-4 lg:block">
-          <PlayerCard
-            barrio={barrio}
-            coins={game.coins}
-            streak={game.streak}
-            properties={propertiesCount}
-          />
-          <CityMap
-            barrioIndex={game.barrioIndex}
-            completedBarrios={game.completedBarrios}
-          />
-          <HowToPlay />
-          <div className="rounded-2xl border border-[#F2B70555] bg-[#F2B70510] p-3 text-xs leading-relaxed text-[#6b4e00]">
-            <strong className="font-display">Maqueta.</strong> El progreso se
-            guarda en este navegador. El dado y la corrección son simulados; en
-            el MVP serán autoritativos del servidor.
-          </div>
-        </aside>
+      <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:py-6">
+        <CityMap
+          key={game.barrioIndex}
+          barrioIndex={game.barrioIndex}
+          completedBarrios={game.completedBarrios}
+        />
 
-        <section className="min-w-0">
-          <div className="grid grid-cols-3 gap-2 lg:hidden">
-            <MobileStat icon={Coins} label="Monedas" value={game.coins} />
-            <MobileStat icon={Flame} label="Racha" value={game.streak} />
-            <MobileStat
-              icon={Building2}
-              label="Propiedades"
-              value={`${propertiesCount}/${CHALLENGE_TILE_COUNT}`}
+        <div className="mt-5 grid gap-5 lg:grid-cols-[310px_minmax(0,1fr)]">
+          <aside className="hidden space-y-4 lg:block">
+            <PlayerCard
+              barrio={barrio}
+              coins={game.coins}
+              streak={game.streak}
+              properties={propertiesCount}
             />
-          </div>
+            <HowToPlay />
+            <div className="rounded-2xl border border-[#F2B70555] bg-[#F2B70510] p-3 text-xs leading-relaxed text-[#6b4e00]">
+              <strong className="font-display">Maqueta.</strong> El progreso se
+              guarda en este navegador. El dado y la corrección son simulados;
+              en el MVP serán autoritativos del servidor.
+            </div>
+          </aside>
 
-          <div className="card mt-3 overflow-hidden p-4 sm:p-5">
-            <div className="flex items-start gap-3">
-              <span
-                className="grid h-12 w-12 flex-none place-items-center rounded-2xl"
-                style={{
-                  backgroundColor: `${barrio.color}14`,
-                  color: barrio.color,
-                }}
-              >
-                <BarrioIcon iconKey={barrio.iconKey} className="h-6 w-6" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="font-display text-xl font-extrabold leading-tight sm:text-2xl">
-                    {barrio.name}
-                  </h1>
-                  <span
-                    className="chip"
-                    style={{
-                      backgroundColor: `${barrio.color}14`,
-                      color: barrio.color,
-                      borderColor: `${barrio.color}33`,
-                    }}
-                  >
-                    Barrio {game.barrioIndex + 1} de 6
-                  </span>
-                  <span className="chip chip-muted">{barrio.grade}</span>
-                </div>
-                <p className="mt-1 text-sm leading-relaxed text-ink/65">
-                  {barrio.temario}
-                </p>
-                <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
-                  <span className="chip chip-coin">
-                    <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
-                    {propertiesCount}/{CHALLENGE_TILE_COUNT} propiedades
-                  </span>
-                  <span className="chip chip-muted">
-                    <Flag className="h-3.5 w-3.5" aria-hidden="true" />
-                    Control al final
-                  </span>
-                  {game.lastRoll && game.phase !== "rolling" && (
-                    <span className="chip chip-muted">
-                      <Dices className="h-3.5 w-3.5" aria-hidden="true" />
-                      Dado {game.dice}: casilla {game.lastRoll.to + 1}
-                    </span>
+          <section className="min-w-0">
+            <div className="grid grid-cols-3 gap-2 lg:hidden">
+              <MobileStat icon={Coins} label="Monedas" value={game.coins} />
+              <MobileStat icon={Flame} label="Racha" value={game.streak} />
+              <MobileStat
+                icon={Building2}
+                label="Propiedades"
+                value={`${propertiesCount}/${CHALLENGE_TILE_COUNT}`}
+              />
+            </div>
+
+            <div className="mt-3 lg:mt-0">
+              <BarrioBoard
+                barrio={barrio}
+                barrioIndex={game.barrioIndex}
+                position={game.position}
+                turnStart={game.turnStart}
+                properties={game.properties}
+              />
+            </div>
+
+            <div
+              className="sticky bottom-3 z-20 mt-4 rounded-2xl border border-line bg-paper p-3 shadow-[0_18px_40px_-30px_rgba(31,36,48,0.6)] sm:p-4"
+              aria-live="polite"
+            >
+              <div className="flex items-center gap-3">
+                <DiceFace
+                  value={game.dice}
+                  rolling={game.phase === "rolling"}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-display text-sm font-extrabold">
+                    Turno {game.turns}
+                  </p>
+                  <p className="text-xs leading-snug text-muted">
+                    {PHASE_HINT[game.phase]}
+                  </p>
+                  {game.phase === "awaiting_roll" && game.lastRoll && (
+                    <p className="mt-0.5 text-xs font-bold text-primary">
+                      Dado {game.dice}: de la casilla {game.lastRoll.from + 1} a
+                      la {game.lastRoll.to + 1}.
+                    </p>
                   )}
                 </div>
-                <div className="mt-3 bar">
-                  <div
-                    className="bar-fill"
-                    style={{
-                      width: `${(propertiesCount / CHALLENGE_TILE_COUNT) * 100}%`,
-                      backgroundColor: barrio.color,
-                    }}
-                  />
-                </div>
+                <span className="chip chip-muted hidden sm:inline-flex">
+                  Dado 1–4
+                </span>
               </div>
-            </div>
-          </div>
-
-          <div className="card mt-3 p-3 sm:p-4">
-            <Board
-              barrio={barrio}
-              position={game.position}
-              turnStart={game.turnStart}
-              properties={game.properties}
-            />
-          </div>
-
-          <div
-            className="sticky bottom-3 z-20 mt-4 rounded-2xl border border-line bg-paper p-3 shadow-[0_18px_40px_-30px_rgba(31,36,48,0.6)] sm:p-4"
-            aria-live="polite"
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={`die ${game.phase === "rolling" ? "die-rolling" : ""}`}
-                aria-hidden="true"
+              <button
+                type="button"
+                onClick={rollDice}
+                disabled={game.phase !== "awaiting_roll"}
+                className="btn btn-primary mt-3 w-full py-3 text-base"
               >
-                {game.dice ?? "?"}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-display text-sm font-extrabold">
-                  Turno {game.turns}
-                </p>
-                <p className="text-xs leading-snug text-muted">
-                  {PHASE_HINT[game.phase]}
-                </p>
-                {game.phase === "awaiting_roll" && game.lastRoll && (
-                  <p className="mt-0.5 text-xs font-bold text-primary">
-                    Dado {game.dice}: de la casilla {game.lastRoll.from + 1} a la{" "}
-                    {game.lastRoll.to + 1}.
-                  </p>
-                )}
-              </div>
-              <span className="chip chip-muted hidden sm:inline-flex">
-                Dado 1–4
-              </span>
+                <Dices className="h-5 w-5" aria-hidden="true" />
+                {game.phase === "rolling"
+                  ? "Lanzando..."
+                  : game.phase === "awaiting_roll"
+                    ? "Lanzar dado"
+                    : "Resuelve el reto para continuar"}
+              </button>
+              <p className="mt-2 text-center text-[11px] text-muted">
+                Maqueta: el dado y la calificación se simulan en el navegador.
+                En el MVP los decide el servidor.
+              </p>
             </div>
-            <button
-              type="button"
-              onClick={rollDice}
-              disabled={game.phase !== "awaiting_roll"}
-              className="btn btn-primary mt-3 w-full py-3 text-base"
-            >
-              <Dices className="h-5 w-5" aria-hidden="true" />
-              {game.phase === "rolling"
-                ? "Lanzando..."
-                : game.phase === "awaiting_roll"
-                  ? "Lanzar dado"
-                  : "Resuelve el reto para continuar"}
-            </button>
-            <p className="mt-2 text-center text-[11px] text-muted">
-              Maqueta: el dado y la calificación se simulan en el navegador. En
-              el MVP los decide el servidor.
-            </p>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
 
       {game.phase === "challenge" && game.question && (

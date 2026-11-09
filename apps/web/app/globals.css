@@ -36,6 +36,10 @@ body {
   background: #f2b70566;
 }
 
+/* Las utilidades de Tailwind deben poder sobrescribir estos componentes
+   (por ejemplo `hidden`, `px-3` o `w-full`). */
+@layer components {
+
 .font-display {
   font-family: var(--font-display);
 }
@@ -395,6 +399,72 @@ body {
   border-radius: 999px;
   background: var(--color-primary);
   transition: width 0.35s ease;
+}
+
+/* ---------- Mapa y tablero ilustrado ---------- */
+
+.map-route-active {
+  animation: routeCrawl 1.3s linear infinite;
+}
+
+.map-node-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nodePulse 2.6s ease-out infinite;
+}
+
+.token-bob {
+  animation: tokenBob 2s ease-in-out infinite;
+}
+
+.dice-wrap {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 10px 14px rgba(31, 36, 48, 0.22));
+}
+
+.dice-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+.dice-tumble {
+  animation: diceRoll 0.55s ease-in-out infinite;
+}
+
+} /* @layer components */
+
+@keyframes routeCrawl {
+  to {
+    stroke-dashoffset: -26;
+  }
+}
+
+@keyframes nodePulse {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes tokenBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 /* ---------- Animaciones ---------- */

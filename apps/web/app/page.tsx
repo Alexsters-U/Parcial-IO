@@ -19,6 +19,9 @@ import Link from "next/link";
 import { BarrioIcon } from "@/components/BarrioIcon";
 import { Logo } from "@/components/Logo";
 import { MathText } from "@/components/MathText";
+import { BarrioScene } from "@/components/art/BarrioScene";
+import { CityMapArt } from "@/components/art/CityMapArt";
+import { Mascot } from "@/components/art/Mascot";
 import { BARRIOS } from "@/lib/game-data";
 
 const PREVIEW_TILES = [
@@ -106,7 +109,20 @@ export default function HomePage() {
                 Acierta y avanzas; falla y vuelves al inicio del turno.
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-5 flex max-w-xl items-center gap-3 rounded-2xl border border-line bg-white/70 p-2.5 pr-4">
+                <Mascot
+                  expression="happy"
+                  className="h-14 w-14 flex-none"
+                  label="Rico, la mascota de MateRico"
+                />
+                <p className="text-xs leading-snug text-ink/70">
+                  <strong className="font-display text-sm text-ink">Rico</strong>{" "}
+                  te acompaña por la ciudad: cada barrio es un reto y cada punto
+                  de control, una nueva llave.
+                </p>
+              </div>
+
+              <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Link className="btn btn-primary px-6 py-3 text-base" href="/play">
                   <Dices className="h-5 w-5" aria-hidden="true" />
                   Jugar la demo
@@ -344,61 +360,75 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 overflow-x-auto rounded-[24px] border border-line bg-[#FBF1DE] shadow-sm">
+              <div
+                className="relative min-w-[36rem] sm:min-w-0"
+                style={{ aspectRatio: "900 / 340" }}
+                aria-hidden="true"
+              >
+                <CityMapArt barrioIndex={0} completedBarrios={0} />
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {BARRIOS.map((barrio, index) => (
                 <article
                   key={barrio.id}
-                  className="card group relative overflow-hidden p-5 transition hover:-translate-y-0.5 hover:shadow-lg"
+                  className="card group overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg"
                 >
                   <div
-                    className="absolute inset-x-0 top-0 h-1.5"
+                    className="h-1.5 w-full"
                     style={{ backgroundColor: barrio.color }}
                     aria-hidden="true"
                   />
-                  <div className="flex items-start justify-between gap-3">
-                    <span
-                      className="grid h-12 w-12 place-items-center rounded-2xl"
-                      style={{
-                        backgroundColor: `${barrio.color}16`,
-                        color: barrio.color,
-                      }}
-                    >
-                      <BarrioIcon iconKey={barrio.iconKey} className="h-6 w-6" />
-                    </span>
-                    <span className="chip chip-muted">
+                  <div className="relative h-28 overflow-hidden border-b border-line">
+                    <BarrioScene
+                      iconKey={barrio.iconKey}
+                      color={barrio.color}
+                      className="absolute inset-0 h-full w-full transition duration-500 group-hover:scale-[1.04]"
+                    />
+                    <span className="chip absolute left-3 top-3 bg-paper/90">
                       {index + 1} / 6 · {barrio.grade}
                     </span>
-                  </div>
-                  <h3 className="mt-4 font-display text-lg font-extrabold">
-                    {barrio.name}
-                  </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-ink/65">
-                    {barrio.temario}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between">
                     <span
-                      className="chip"
-                      style={{
-                        backgroundColor: `${barrio.color}14`,
-                        color: barrio.color,
-                        borderColor: `${barrio.color}33`,
-                      }}
+                      className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-xl bg-paper/90 shadow-sm"
+                      style={{ color: barrio.color }}
                     >
-                      {barrio.difficulty}
+                      <BarrioIcon iconKey={barrio.iconKey} className="h-4 w-4" />
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-ink/70">
-                      {index === 0 ? (
-                        <>
-                          <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                          Jugable en la maqueta
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="h-3.5 w-3.5" aria-hidden="true" />
-                          Se desbloquea al avanzar
-                        </>
-                      )}
-                    </span>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-display text-lg font-extrabold">
+                      {barrio.name}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-ink/65">
+                      {barrio.temario}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between gap-2">
+                      <span
+                        className="chip"
+                        style={{
+                          backgroundColor: `${barrio.color}14`,
+                          color: barrio.color,
+                          borderColor: `${barrio.color}33`,
+                        }}
+                      >
+                        {barrio.difficulty}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-ink/70">
+                        {index === 0 ? (
+                          <>
+                            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                            Jugable en la maqueta
+                          </>
+                        ) : (
+                          <>
+                            <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+                            Se desbloquea al avanzar
+                          </>
+                        )}
+                      </span>
+                    </div>
                   </div>
                 </article>
               ))}

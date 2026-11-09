@@ -4,10 +4,9 @@ import {
   AlertTriangle,
   ArrowRight,
   Coins,
-  Sparkles,
-  TrendingDown,
 } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { EventArt } from "@/components/art/EventArt";
 import type { EventCard } from "@/lib/game-data";
 
 export function EventModal({
@@ -22,15 +21,6 @@ export function EventModal({
     const timer = window.setTimeout(() => buttonRef.current?.focus(), 120);
     return () => window.clearTimeout(timer);
   }, []);
-
-  const Icon =
-    event.coins && event.coins > 0
-      ? Coins
-      : event.coins && event.coins < 0
-        ? TrendingDown
-        : event.streakReset
-          ? AlertTriangle
-          : Sparkles;
 
   const tone =
     event.tone === "good"
@@ -49,10 +39,10 @@ export function EventModal({
       >
         <div className="px-4 py-8 text-center sm:px-8">
           <span
-            className="mx-auto grid h-16 w-16 place-items-center rounded-3xl"
-            style={{ backgroundColor: tone.bg, color: tone.color }}
+            className="mx-auto grid h-24 w-32 place-items-center rounded-3xl"
+            style={{ backgroundColor: tone.bg }}
           >
-            <Icon className="h-9 w-9" aria-hidden="true" />
+            <EventArt eventId={event.id} className="h-20 w-28" />
           </span>
           <span className="chip mt-3" style={{ backgroundColor: tone.bg, color: tone.color }}>
             {tone.label}

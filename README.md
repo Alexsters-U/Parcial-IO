@@ -59,6 +59,46 @@ pnpm build   # build de producción
 pnpm lint    # ESLint + reglas de React
 ```
 
+## Ejecutar con Docker
+
+Requisitos: Docker 24+ con Compose v2. No hace falta Node ni pnpm en la máquina.
+
+```bash
+docker compose up --build
+```
+
+Abre <http://localhost:3000>. Para detenerlo:
+
+```bash
+docker compose down
+```
+
+Si el puerto 3000 está ocupado (por ejemplo, por `pnpm dev`), usa otro puerto del host:
+
+```bash
+# PowerShell
+$env:WEB_PORT=3100; docker compose up --build
+# Bash
+WEB_PORT=3100 docker compose up --build
+```
+
+También puedes construir y ejecutar la imagen sin Compose:
+
+```bash
+docker build -t materico-web .
+docker run --rm -p 3000:3000 materico-web
+```
+
+### Qué hace la imagen
+
+- **Multi-stage**: instala dependencias con pnpm y `--frozen-lockfile`, compila Next.js y solo copia el servidor `standalone` a la imagen final.
+- **Usuario no-root** (`nextjs:nodejs`) y sin capacidades extra.
+- **Healthcheck** contra `/` cada 30 s; Compose lo muestra como `healthy`.
+- **Puerto interno 3000**; el host se controla con `WEB_PORT`.
+- El build usa caché de BuildKit para el store de pnpm, así que las siguientes construcciones son más rápidas.
+
+> La maqueta no necesita variables de entorno ni base de datos. En el MVP, los secretos se inyectarán en tiempo de ejecución y nunca se copiarán dentro de la imagen.
+
 ## Rutas
 
 | Ruta | Descripción |
@@ -113,7 +153,11 @@ materico/
 │           ├── questions.ts      # 22 plantillas paramétricas y verificación
 │           └── teacher-data.ts   # datos ficticios del panel
 ├── package.json
+├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── Dockerfile              # imagen multi-stage de producción
+├── docker-compose.yml      # servicio web + healthcheck
+├── .dockerignore
 └── README.md
 ```
 

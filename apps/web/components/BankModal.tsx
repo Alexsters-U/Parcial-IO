@@ -2,6 +2,7 @@
 
 import { ArrowRight, Coins, Dices, Landmark } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { CoinIcon } from "@/components/art/CoinIcon";
 import type { Barrio } from "@/lib/game-data";
 
 export function BankModal({
@@ -56,7 +57,8 @@ export function BankModal({
                 <Coins className="h-3.5 w-3.5" aria-hidden="true" />
                 Opción segura
               </p>
-              <p className="mt-2 font-display text-2xl font-extrabold">
+              <p className="mt-2 flex items-center gap-1.5 font-display text-2xl font-extrabold">
+                <CoinIcon className="h-6 w-6" />
                 +25 monedas
               </p>
               <p className="mt-1 text-xs text-muted">
@@ -77,7 +79,8 @@ export function BankModal({
                 <Dices className="h-3.5 w-3.5" aria-hidden="true" />
                 Doble o nada
               </p>
-              <p className="mt-2 font-display text-2xl font-extrabold">
+              <p className="mt-2 flex items-center gap-1.5 font-display text-2xl font-extrabold">
+                <CoinIcon className="h-6 w-6" />
                 +50 monedas
               </p>
               <p className="mt-1 text-xs text-muted">

@@ -3,16 +3,15 @@
 import {
   ArrowRight,
   Check,
-  CircleCheck,
-  CircleX,
   Coins,
   Flame,
   Lightbulb,
   TimerOff,
-  Trophy,
 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { MathText } from "@/components/MathText";
+import { BadgeArt } from "@/components/art/BadgeArt";
+import { Mascot } from "@/components/art/Mascot";
 import type { Barrio } from "@/lib/game-data";
 import type {
   AnswerContext,
@@ -95,19 +94,21 @@ export function ResultModal({
         <div className="px-4 py-6 sm:px-7">
           <div className="flex items-start gap-4">
             <span
-              className="grid h-14 w-14 flex-none place-items-center rounded-2xl"
+              className="h-16 w-16 flex-none overflow-hidden rounded-2xl"
               style={{
                 backgroundColor: `${tone === "success" ? "#067647" : "#B42318"}14`,
-                color: toneColor,
               }}
             >
-              {result.correct ? (
-                <CircleCheck className="h-8 w-8" aria-hidden="true" />
-              ) : result.timedOut ? (
-                <TimerOff className="h-8 w-8" aria-hidden="true" />
-              ) : (
-                <CircleX className="h-8 w-8" aria-hidden="true" />
-              )}
+              <Mascot
+                expression={
+                  result.correct
+                    ? "happy"
+                    : result.timedOut
+                      ? "timeout"
+                      : "sad"
+                }
+                className="h-16 w-16"
+              />
             </span>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
@@ -235,17 +236,15 @@ export function CheckpointEndModal({
       >
         <div className="px-4 py-8 text-center sm:px-8">
           <span
-            className="mx-auto grid h-16 w-16 place-items-center rounded-3xl"
+            className="mx-auto grid h-20 w-20 place-items-center overflow-hidden rounded-3xl"
             style={{
               backgroundColor: passed ? "#06764714" : "#B4231814",
-              color: passed ? "var(--color-success)" : "var(--color-danger)",
             }}
           >
-            {passed ? (
-              <Trophy className="h-9 w-9" aria-hidden="true" />
-            ) : (
-              <CircleX className="h-9 w-9" aria-hidden="true" />
-            )}
+            <Mascot
+              expression={passed ? "trophy" : "sad"}
+              className="h-20 w-20"
+            />
           </span>
           <h2
             id="checkpoint-title"
@@ -268,7 +267,11 @@ export function CheckpointEndModal({
                 +50 monedas
               </span>
               <span className="chip chip-success">
-                <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
+                <BadgeArt
+                  iconKey={barrio.iconKey}
+                  color={barrio.color}
+                  className="h-5 w-5"
+                />
                 Insignia del barrio
               </span>
             </div>
